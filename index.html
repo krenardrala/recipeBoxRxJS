@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Box</title>
+    <link rel="stylesheet" href="../style/_custom.scss">
+</head>
+<body>
+    <div id="app">
+        <div class="jumbotron alert-info">
+            <div class="container">
+                <h1 class="display-4">Recipe Encyclopedia</h1>
+                <p class="lead">You are what you eat.</p>
+            </div>
+        </div>
+
+        <main role="main" class="container">
+
+            <div class="row">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Recipe Name and Description</span>
+                    </div>
+                    <input type="text" aria-label="name" class="form-control recipe-name">
+                    <input type="text" aria-label="description" class="form-control recipe-description">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <button id="addRecipe" type="button" class="btn btn-success btn-block">
+                    Add Recipe
+                </button>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="list-group">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                            <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modalDescription"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary edit-recipe">Edit Recipe</button>
+                            <button type="button" class="btn btn-success save-recipe hidden">Save Recipe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="bundle.js"></script>
+</body>
+</html>

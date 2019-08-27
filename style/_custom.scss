@@ -1,0 +1,22 @@
+/*@import "custom";
+@import "~bootstrap/scss/bootstrap";*/
+
+.delete {
+  position: relative;
+  top: -37px;
+  color: red;
+  cursor: pointer;
+  float: right;
+  z-index: 2;
+  right: 15px;
+}
+
+.list-group-item {
+  position: relative;
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
