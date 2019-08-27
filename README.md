@@ -1,2 +1,2 @@
 # recipeBoxRxJS
-A small application build using RxJS library
+A small application built using RxJS library
