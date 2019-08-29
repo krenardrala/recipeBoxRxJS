@@ -1,57 +1,39 @@
 import { fromEvent } from 'rxjs';
+import AddRecipe from './AddRecipe';
 
 class ListRecipes {
     private addRecipe: HTMLButtonElement;
     private list: HTMLElement;
-    private recipeName: HTMLInputElement;
-    private recipeDescription: HTMLInputElement;
     private modal: HTMLElement;
     private modalTitle: HTMLElement;
     private modalDescription: HTMLElement;
     private modalClose: NodeListOf<HTMLElement>;
+    private addRecipeClass: AddRecipe;
 
     constructor() {
         this.addRecipe = document.querySelector('#addRecipe');
         this.list = document.querySelector('.list-group');
-        this.recipeName = document.querySelector('.recipe-name');
-        this.recipeDescription = document.querySelector('.recipe-description');
         this.modal = document.querySelector('#exampleModalLong');
         this.modalTitle = document.querySelector('#exampleModalLongTitle');
         this.modalDescription = document.querySelector('#modalDescription');
         this.modalClose = document.querySelectorAll('.closeModal');
+        this.addRecipeClass = new AddRecipe();
 
         this.listRecipes();
         this.addEventListeners();
     }
 
     private addEventListeners = () : void => {
-        fromEvent(this.addRecipe, 'click').subscribe(() => this.addNewRecipe());
+        fromEvent(this.addRecipe, 'click').subscribe(() => this.addRecipeClass.addNewRecipe());
         fromEvent(this.modalClose, 'click').subscribe(() => this.closeModal());
     };
 
-    private addNewRecipe = () : void => {
-        let recipes: any = [];
-        if(localStorage.getItem('recipes')) {
-            recipes = JSON.parse(localStorage.getItem('recipes'));
-        }
-        let recipesObj: any = {
-            name: this.recipeName.value,
-            description: this.recipeDescription.value
-        };
-        recipes.push(recipesObj);
-        localStorage.setItem('recipes', JSON.stringify(recipes));
-        this.recipeName.value = '';
-        this.recipeDescription.value = '';
-        this.listRecipes();
-    };
-
-    private listRecipes = () : void => {
+    listRecipes = () : void => {
         // Read item:
         this.list.innerText = '';
         let recipes: any = [];
         if (localStorage.getItem('recipes')) {
             recipes = JSON.parse(localStorage.getItem('recipes'));
-
 
             recipes.forEach((recipe: any, index: number) => {
                 let listItem = `<div><a href="#" data-id="` + index + `" class="list-group-item list-group-item-action">` + recipe.name + `</a><span class="delete" data-id="` + index + `">Delete</span></div>`;
