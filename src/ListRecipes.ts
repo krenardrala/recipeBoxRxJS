@@ -1,7 +1,6 @@
 import { fromEvent } from 'rxjs';
-import { throttleTime, map, scan, find } from 'rxjs/operators';
 
-class Recipe {
+class ListRecipes {
     private addRecipe: HTMLButtonElement;
     private list: HTMLElement;
     private recipeName: HTMLInputElement;
@@ -91,39 +90,38 @@ class Recipe {
     };
 
     updateRecipeView = (id: number, currentRecipe: any) : void => {
-        console.log(id, currentRecipe);
         const saveButton = document.querySelector('.save-recipe');
         document.querySelector('.edit-recipe').classList.add('hidden');
         saveButton.classList.remove('hidden');
-        //fromEvent(saveButton, 'click').subscribe(() => this.saveRecipe(id, currentRecipe));
+        fromEvent(saveButton, 'click').subscribe(() => this.saveRecipe(id));
 
-        const modalBody =  document.querySelector('.modal-body');
-        const recipeTitleInput = `<input type="text" aria-label="name" class="form-control recipe-name-edit" value="`+ currentRecipe.name +`">`;
-        const recipeDescriptionInput = `<input type="text" aria-label="name" class="form-control recipe-description-edit" value="`+ currentRecipe.description +`">`;
-        modalBody.removeChild(document.querySelector('#modalDescription'));
-        modalBody.insertAdjacentHTML('beforeend', recipeTitleInput);
-        modalBody.insertAdjacentHTML('beforeend', recipeDescriptionInput);
+        const modalEditBody = document.querySelector('.modal-edit');
+        modalEditBody.classList.remove('hidden');
+        const nameInput : HTMLInputElement = document.querySelector('.recipe-name-edit');
+        const descriptionInput : HTMLInputElement = document.querySelector('.recipe-description-edit');
+        nameInput.value = currentRecipe.name;
+        descriptionInput.value = currentRecipe.description;
+        this.modalDescription.style.display = "none";
 
     };
 
-    saveRecipe = (id: number, currentRecipe: any) : void => {
+    saveRecipe = (id: number) : void => {
         const recipes = JSON.parse(localStorage.getItem('recipes'));
         const recipeName: HTMLInputElement = document.querySelector('.recipe-name-edit');
         const recipeDescription: HTMLInputElement = document.querySelector('.recipe-description-edit');
-        debugger
-        recipes.forEach((recipe: any, index: number)=> {
-            if(index === id) {
-                recipe.name = recipeName;
-                recipe.description = recipeDescription;
-            }
-        })
+        const modalEditBody = document.querySelector('.modal-edit');
 
-        //localStorage.removeItem('recipes');
-        localStorage.setItem('recipes', recipes);
-        this.listRecipes();
+        recipes[id].name = recipeName.value;
+        recipes[id].description = recipeDescription.value;
+
+        this.modalDescription.style.display = "block";
+        modalEditBody.classList.add('hidden');
+        document.querySelector('.save-recipe').classList.add('hidden');
+        document.querySelector('.edit-recipe').classList.remove('hidden');
+
+        localStorage.setItem('recipes', JSON.stringify(recipes));
         this.closeModal();
-
-
+        this.listRecipes();
     };
 
     deleteRecipe = (event: Event) : void => {
@@ -137,10 +135,14 @@ class Recipe {
         localStorage.setItem('recipes', JSON.stringify(newRecipesList));
 
         this.listRecipes();
-
     };
 
     private closeModal = () : void => {
+        const modalEditBody = document.querySelector('.modal-edit');
+        this.modalDescription.style.display = "block";
+        modalEditBody.classList.add('hidden');
+        document.querySelector('.save-recipe').classList.add('hidden');
+        document.querySelector('.edit-recipe').classList.remove('hidden');
         const backDrop: HTMLElement = document.querySelector('.modal-backdrop');
         this.modal.classList.remove('show');
         this.modal.style.display = 'none';
@@ -150,4 +152,4 @@ class Recipe {
 
 }
 
-export default Recipe;
+export default ListRecipes;
