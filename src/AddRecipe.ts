@@ -11,20 +11,23 @@ class AddRecipe {
     }
 
     addNewRecipe = () : void => {
-        this.listRecipes = new ListRecipes();
-        let recipes: any = [];
-        if(localStorage.getItem('recipes')) {
-            recipes = JSON.parse(localStorage.getItem('recipes'));
+        if (this.recipeName.value && this.recipeDescription.value) {
+            let recipes: any = [];
+            if(localStorage.getItem('recipes')) {
+                recipes = JSON.parse(localStorage.getItem('recipes'));
+            }
+            let recipesObj: any = {
+                name: this.recipeName.value,
+                description: this.recipeDescription.value
+            };
+
+            recipes.push(recipesObj);
+            localStorage.setItem('recipes', JSON.stringify(recipes));
+            this.recipeName.value = '';
+            this.recipeDescription.value = '';
+            this.listRecipes = new ListRecipes();
+            this.listRecipes.listRecipes();
         }
-        let recipesObj: any = {
-            name: this.recipeName.value,
-            description: this.recipeDescription.value
-        };
-        recipes.push(recipesObj);
-        localStorage.setItem('recipes', JSON.stringify(recipes));
-        this.recipeName.value = '';
-        this.recipeDescription.value = '';
-        this.listRecipes.listRecipes();
     };
 
 }

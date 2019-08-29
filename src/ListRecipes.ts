@@ -1,5 +1,6 @@
 import { fromEvent } from 'rxjs';
 import AddRecipe from './AddRecipe';
+import DeleteRecipe from './DeleteRecipe';
 
 class ListRecipes {
     private addRecipe: HTMLButtonElement;
@@ -9,6 +10,7 @@ class ListRecipes {
     private modalDescription: HTMLElement;
     private modalClose: NodeListOf<HTMLElement>;
     private addRecipeClass: AddRecipe;
+    private deleteRecipe: DeleteRecipe;
 
     constructor() {
         this.addRecipe = document.querySelector('#addRecipe');
@@ -18,6 +20,7 @@ class ListRecipes {
         this.modalDescription = document.querySelector('#modalDescription');
         this.modalClose = document.querySelectorAll('.closeModal');
         this.addRecipeClass = new AddRecipe();
+        this.deleteRecipe = new DeleteRecipe();
 
         this.listRecipes();
         this.addEventListeners();
@@ -29,7 +32,6 @@ class ListRecipes {
     };
 
     listRecipes = () : void => {
-        // Read item:
         this.list.innerText = '';
         let recipes: any = [];
         if (localStorage.getItem('recipes')) {
@@ -46,10 +48,10 @@ class ListRecipes {
                 fromEvent(item, 'click').subscribe((event) => this.editRecipe(event));
             });
             deleteItem.forEach((item) => {
-                fromEvent(item, 'click').subscribe((event) => this.deleteRecipe(event));
+                fromEvent(item, 'click').subscribe((event) => this.deleteRecipe.deleteRecipe(event));
             });
-    }
-    }
+        }
+    };
 
     editRecipe = (event: Event) : void => {
         const { target } = event;
@@ -61,7 +63,6 @@ class ListRecipes {
         });
 
         fromEvent(editButton, 'click').subscribe(() => this.updateRecipeView(id, currentRecipe));
-
 
         this.modalTitle.innerText = currentRecipe.name;
         this.modalDescription.innerText = currentRecipe.description;
@@ -103,19 +104,6 @@ class ListRecipes {
 
         localStorage.setItem('recipes', JSON.stringify(recipes));
         this.closeModal();
-        this.listRecipes();
-    };
-
-    deleteRecipe = (event: Event) : void => {
-        const { target } = event;
-        const id: any = (<HTMLInputElement>target).getAttribute('data-id');
-        const recipes = JSON.parse(localStorage.getItem('recipes'));
-        const newRecipesList = recipes.filter((recipe: any, index: string) => {
-            return index != id ? recipe : null;
-        });
-
-        localStorage.setItem('recipes', JSON.stringify(newRecipesList));
-
         this.listRecipes();
     };
 
