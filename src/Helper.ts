@@ -13,6 +13,8 @@ class Helper {
     }
 
     updateRecipeView = (id: number, currentRecipe: any) : void => {
+        const editButton = document.querySelector('.edit-recipe');
+        editButton.removeEventListener('click', () => this.updateRecipeView(id, currentRecipe));
         const updateRecipe = new UpdateRecipe();
         const saveButton = document.querySelector('.save-recipe');
         document.querySelector('.edit-recipe').classList.add('hidden');
@@ -27,6 +29,7 @@ class Helper {
         descriptionInput.value = currentRecipe.description;
         this.modalDescription.style.display = "none";
     };
+
 
     closeModal = () : void => {
         const modalBackDrop: HTMLElement = document.querySelector('.modal-backdrop');

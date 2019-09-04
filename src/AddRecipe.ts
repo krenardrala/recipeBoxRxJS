@@ -3,7 +3,6 @@ import ListRecipes from './ListRecipes';
 class AddRecipe {
     private recipeName: HTMLInputElement;
     private recipeDescription: HTMLInputElement;
-    private listRecipes: ListRecipes;
 
     constructor() {
         this.recipeName = document.querySelector('.recipe-name');
@@ -12,21 +11,18 @@ class AddRecipe {
 
     addNewRecipe = () : void => {
         if (this.recipeName.value && this.recipeDescription.value) {
-            let recipes: any = [];
-            if(localStorage.getItem('recipes')) {
-                recipes = JSON.parse(localStorage.getItem('recipes'));
-            }
-            let recipesObj: any = {
+            const recipes = JSON.parse(localStorage.getItem('recipes'));
+
+            let recipesObj: object = {
+                id: recipes ? recipes.length + 1 : 1,
                 name: this.recipeName.value,
                 description: this.recipeDescription.value
             };
 
-            recipes.push(recipesObj);
-            localStorage.setItem('recipes', JSON.stringify(recipes));
+            let listRecipes = new ListRecipes();
+            listRecipes.addItem(recipesObj);
             this.recipeName.value = '';
             this.recipeDescription.value = '';
-            this.listRecipes = new ListRecipes();
-            this.listRecipes.listRecipes();
         }
     };
 

@@ -37,7 +37,8 @@ class UpdateRecipe {
 
 
     saveRecipe = (id: number) : void => {
-        this.listRecipes = new ListRecipes();
+        const saveButton = document.querySelector('.save-recipe');
+        saveButton.removeEventListener('click', () => this.saveRecipe(id));
         const recipes = JSON.parse(localStorage.getItem('recipes'));
         const recipeName: HTMLInputElement = document.querySelector('.recipe-name-edit');
         const recipeDescription: HTMLInputElement = document.querySelector('.recipe-description-edit');
@@ -53,7 +54,9 @@ class UpdateRecipe {
 
         localStorage.setItem('recipes', JSON.stringify(recipes));
         this.helper.closeModal();
-        this.listRecipes.listRecipes();
+        new ListRecipes();
+        //window.location.reload();
+        //this.listRecipes;
     };
 }
 
